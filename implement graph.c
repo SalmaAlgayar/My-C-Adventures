@@ -74,6 +74,25 @@ void print_graph(graph_ptr graph) {
 
 }
 
+int path_distance(graph_ptr graph_ptr, int * path, int path_length) {
+    int distance = 0;
+    for (int i = 0; i < path_length - 1; i++) {
+        int src = path[i];
+        int dest = path[i + 1];
+        g_node_ptr cur = graph_ptr -> adj_lists[src];
+        if (!cur) return -1;
+        while (cur) {
+            if (cur -> vertex == dest) {
+                distance += cur -> weight;
+                break;
+            }
+            cur = cur -> next;
+            if (!cur) return -1;
+        }
+    }
+    return distance;
+}
+
 
 int main() {
 
@@ -85,6 +104,10 @@ int main() {
     add_edge(graph_ptr, 2, 3, 7);
     print_graph(graph_ptr);
 
+    printf("\n%d\n", path_distance(graph_ptr, (int[]) {
+        0,
+        2
+    }, 2));
 
     free(graph_ptr);
 
